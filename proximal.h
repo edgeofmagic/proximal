@@ -712,7 +712,7 @@ namespace utils
 			return _ulp(x);
 		}
 	
-		inline float ulp(double x) const
+		inline double ulp(double x) const
 		{
 			if (isinf(x) || isnan(x))
 			{
@@ -725,7 +725,7 @@ namespace utils
 			return _ulp(x);
 		}
 	
-		inline float ulp(long double x) const
+		inline long double ulp(long double x) const
 		{
 			if (isinf(x) || isnan(x))
 			{
@@ -751,7 +751,7 @@ namespace utils
 			return _margin(x);
 		}
 	
-		inline float margin(double x) const
+		inline double margin(double x) const
 		{
 			if (isinf(x) || isnan(x))
 			{
@@ -764,7 +764,7 @@ namespace utils
 			return _margin(x);
 		}
 	
-		inline float margin(long double x) const
+		inline long double margin(long double x) const
 		{
 			if (isinf(x) || isnan(x))
 			{
