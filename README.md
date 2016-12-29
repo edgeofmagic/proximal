@@ -1,5 +1,6 @@
 # proximal
-##A C++ template that compares floating point values for near equality in a robust manner
+
+##i A C++ template that compares floating point values for near equality in a robust manner
 
 This template provides a robust mechanism for comparing floating point
 values for effective equality, or, being *close enough*. It is primarily intended 
@@ -12,9 +13,9 @@ representational rounding errors.
 
 The boolean expression for effective equality is:
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;close_enough(a, b) := |a - b| <= margin(a, b)
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;close_enough(a, b) := &#124;a - b&#124; <= margin(a, b)
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;margin(a, b) := 2<sup>N</sup> * ulp(max(|a|, |b|), p<sub>rep</sub>) 
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;margin(a, b) := 2<sup>N</sup> * ulp(max(&#124;a&#124;, &#124;b&#124;), p<sub>rep</sub>) 
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ulp(x,p<sub>rep</sub>) := 2<sup> max( &lfloor; log<sub>2</sub>(x) &rfloor; - p<sub>rep</sub>, exp<sub>min</sub> - p<sub>rep</sub>)  </sup>
 
@@ -33,7 +34,7 @@ be representable as a finite floating point value. Hence the above approximation
 
 >ulp(x) is the value of the least significant bit in the floating point representation of the value x.<sup>[2](#me)</sup>
 
-###About the implementation
+### About the implementation
 
 The definitions above are abstract. The implementation doesn't use heavyweight floating point calculations for logarithms and exponentiation. 
 
@@ -47,38 +48,41 @@ The specializations are for float (single precision IEEE 754 format), double (do
 optimization levels.
 
 The proximal.h header includes the following defines:
-```
+
+```` cpp
 #define __USE_FLOAT_IEEE754_SPECIALIZATION__ 1
 #define __USE_DOUBLE_IEEE754_SPECIALIZATION__ 1
 #define __USE_LONG_DOUBLE_X86_EXTENDED_SPECIALIZATION__ 1
-```
+````
 To select the generic template implementation for a floating point type, set the corresponding definition to 0.
 
-###How to use it
+### How to use it
 
 Instantiate the template with a small number N for the parameter, and use 
 it to compare values of some floating point type.
-```
-	#include <proximal.h>
 
-	double a = 0.1;
-	double b = 1.0 - 0.9;
+```` cpp
+#include <proximal.h>
 
-	if (a == b) // will be false
-	{
-		do_something();
-	}
+double a = 0.1;
+double b = 1.0 - 0.9;
 
-	utils::proximal<1> close_enough;
+if (a == b) // will be false
+{
+	do_something();
+}
+
+utils::proximal<1> close_enough;
 	
-	// the comparison is implemented as the function call operator:
+// the comparison is implemented as the function call operator:
 
-	if (close_enough(a, b)) // will be true
-	{
-		do_something();
-	}
-```
-###What value should I use for the template parameter?
+if (close_enough(a, b)) // will be true
+{
+	do_something();
+}
+````
+
+### What value should I use for the template parameter?
 
 When you instantiate the template with some value N, it's roughly equivalent
 to saying, "please ignore the last (that is, least significant) N + 1 bits 
@@ -96,22 +100,23 @@ of noise in floating point computations than I might otherwise be.
 
 It can be useful to know the value of ulp(x) or the value of margin<N>(x).
 The template provides methods for this:
-```
-	#include <proximal.h>
+```` cpp
+#include <proximal.h>
 	
-	utils::proximal<1> close_enough;
-	double x = ...
-	double m = close_enough.margin(x);
-	double u = close_enough.ulp(x);
-```
+utils::proximal<1> close_enough;
+double x = ...
+double m = close_enough.margin(x);
+double u = close_enough.ulp(x);
+````
 There are also standalone function templates for ulp and margin:
-```
-	float x = ...;
-	float m = utils::margin<2>(x); // template parameter same as class template
-	float u = utils::ulp(x);
+
+```` cpp
+float x = ...;
+float m = utils::margin<2>(x); // template parameter same as class template
+float u = utils::ulp(x);
 ```	
 
-###Miscellany
+### Miscellany
 
 This template will behave properly for comparisons involving denormal 
 numbers, zeros of opposite sign, NaN values, and infinite values (as 
@@ -130,23 +135,24 @@ defined by floating point representation standards). Specifically:
 The template should work with any floating point type with binary exponents 
 and significands. It won't work with decimal representations. A single 
 template instantiation can be used to compare pairs of any floating point type:
-```
-	proximal<1> close_enough;
+```` cpp 
+proximal<1> close_enough;
 
-	float a = ...; float b = ...;
-	if (close_enough(a, b)) {  ... }
+float a = ...; float b = ...;
+if (close_enough(a, b)) {  ... }
 
-	long double d = ...; long double e = ...;
-	if (close_enough(d, e) { ... }
-```
+long double d = ...; long double e = ...;
+if (close_enough(d, e) { ... }
+````
 and so on. An attempt to compare dissimilar floating point will generate 
 compile errors:
-```
+
+```` cpp
 	if (close_enough(a, d) { ... }  // compile error
 ```
 Arguments will not be implicitly type-converted.
 
-###To do
+### To do
 
 * Provide comprehensive test cases.
 
