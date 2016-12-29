@@ -100,6 +100,7 @@ of noise in floating point computations than I might otherwise be.
 
 It can be useful to know the value of ulp(x) or the value of margin<N>(x).
 The template provides methods for this:
+
 ```` cpp
 #include <proximal.h>
 	
@@ -114,7 +115,7 @@ There are also standalone function templates for ulp and margin:
 float x = ...;
 float m = utils::margin<2>(x); // template parameter same as class template
 float u = utils::ulp(x);
-```	
+````
 
 ### Miscellany
 
