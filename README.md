@@ -1,6 +1,6 @@
 # proximal
 
-##i A C++ template that compares floating point values for near equality in a robust manner
+## A C++ template that compares floating point values for near equality in a robust manner
 
 This template provides a robust mechanism for comparing floating point
 values for effective equality, or, being *close enough*. It is primarily intended 
