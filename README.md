@@ -136,6 +136,7 @@ defined by floating point representation standards). Specifically:
 The template should work with any floating point type with binary exponents 
 and significands. It won't work with decimal representations. A single 
 template instantiation can be used to compare pairs of any floating point type:
+
 ```` cpp 
 proximal<1> close_enough;
 
@@ -150,7 +151,7 @@ compile errors:
 
 ```` cpp
 	if (close_enough(a, d) { ... }  // compile error
-```
+````
 Arguments will not be implicitly type-converted.
 
 ### To do
