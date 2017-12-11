@@ -161,8 +161,7 @@ Arguments will not be implicitly type-converted.
 * Test with more diverse floating point representations.
 
 
-<a name="kahan">1</a>: Kahan, W. 2004. [A logarithm too clever by half](http://http.cs.berkeley.edu/
-∼wkahan/LOG10HAF.TXT)
+<a name="kahan">1</a>: Kahan, W. 2004. [A logarithm too clever by half](https://people.eecs.berkeley.edu/~wkahan/LOG10HAF.TXT)
 
 <a name="me">2</a>: Me. 2016. This document.
 
