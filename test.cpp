@@ -1,8 +1,7 @@
-#include <iostream>
-#include <iomanip>
-#include <limits>
+#define DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN
+#include "doctest.h"
 #include "proximal.h"
-#include <chrono>
+#include <iostream>
 
 using namespace utils;
 
@@ -40,79 +39,66 @@ print(const std::string& prefix, T value)
 
 };
 
-int main(int argc, const char * argv[])
+TEST_CASE("proximal")
 {
-	
+	SUBCASE("float (1, 1+1ulp) 1ulp pass")
 	{
 		proximal<0> close_enough;
 
 		auto a = representation<float>(0,0).value();
 		auto b = representation<float>(0,0x00000001).value();
-		print("a=", a);
+		print("\na=", a);
 		print("b=", b);
-		print("error=", std::abs(a - b));
+		print("error=", std::abs(b - a));
 		print("margin=", margin<0>(std::max(a, b)));
 		print("ulp=", ulp(std::max(a, b)));
 		auto c = close_enough(a, b);
-		assert(c);
+		CHECK(c);
 	}
 
+	SUBCASE("float (1, 1+2ulp) 1ulp fail")
 	{
 		proximal<0> close_enough;
-
 		auto a = representation<float>(0,0).value();
 		auto b = representation<float>(0,0x00000002).value();
-		print("a=", a);
+		print("\na=", a);
 		print("b=", b);
-		print("error=", std::abs(a - b));
+		print("error=", std::abs(b - a));
 		print("margin=", margin<0>(std::max(a, b)));
 		print("ulp=", ulp(std::max(a, b)));
 		auto c = close_enough(a, b);
-		assert(!c);
+		CHECK(!c);
 	}
 
+	SUBCASE("double (1, 1+2ulp) 2ulp pass")
 	{
 		proximal<1> close_enough;
-		
 		auto a = representation<double>(0,0).value();
 		auto b = representation<double>(0,0x0000000000000002).value();
 		print("\na=", a);
 		print("b=", b);
-		print("error=", std::abs(a - b));
-		print("margin=", margin<1>(std::max(a, b)));
+		print("error=", std::abs(b - a));
+		print("margin=", margin<0>(std::max(a, b)));
 		print("ulp=", ulp(std::max(a, b)));
 		bool c = close_enough(a, b);
-		assert(c);
+		CHECK(c);
 	}
 
+	SUBCASE("double (1, 1+3ulp) 2ulp fail")
 	{
 		proximal<1> close_enough;
-		
 		auto a = representation<double>(0,0).value();
 		auto b = representation<double>(0,0x0000000000000003).value();
 		print("\na=", a);
 		print("b=", b);
-		print("error=", std::abs(a - b));
-		print("margin=", margin<1>(std::max(a, b)));
+		print("error=", std::abs(b - a));
+		print("margin=", margin<0>(std::max(a, b)));
 		print("ulp=", ulp(std::max(a, b)));
 		bool c = close_enough(a, b);
-		assert(!c);
+		CHECK(!c);
 	}
 
-	{
-		proximal<1> close_enough;
-		
-		auto a = representation<double>(0,0).value();
-		auto b = representation<double>(0,0x0000000000000002).value();
-		print("\na=", a);
-		print("b=", b);
-		print("error=", std::abs(a - b));
-		print("margin=", margin<1>(std::max(a, b)));
-		print("ulp=", ulp(std::max(a, b)));
-		bool c = close_enough(a, b);
-		assert(c);
-	}
-
+	SUBCASE("double (1, 1+2ulp) 1ulp fail")
 	{
 		proximal<0> close_enough;
 		
@@ -120,13 +106,14 @@ int main(int argc, const char * argv[])
 		auto b = representation<double>(0,0x0000000000000002).value();
 		print("\na=", a);
 		print("b=", b);
-		print("error=", std::abs(a - b));
+		print("error=", std::abs(b - a));
 		print("margin=", margin<0>(std::max(a, b)));
 		print("ulp=", ulp(std::max(a, b)));
 		bool c = close_enough(a, b);
-		assert(!c);
+		CHECK(!c);
 	}
 
+	SUBCASE ("long double A")
 	{
 		proximal<1> close_enough;
 		
@@ -138,9 +125,10 @@ int main(int argc, const char * argv[])
 		print("margin=", margin<1>(std::max(a, b)));
 		print("ulp=", ulp(std::max(a, b)));
 		bool c = close_enough(a, b);
-		assert(c);
+		CHECK(c);
 	}
 
+	SUBCASE ("long double B") 
 	{
 		proximal<0> close_enough;
 		
@@ -152,56 +140,22 @@ int main(int argc, const char * argv[])
 		print("margin=", margin<0>(std::max(a, b)));
 		print("ulp=", ulp(std::max(a, b)));
 		bool c = close_enough(a, b);
-		assert(!c);
+		CHECK(!c);
 	}
 
-    return 0;
+	SUBCASE ("long double (0,minimum denormalized long double) 1ulp pass") 
+	{
+		proximal<0> close_enough;
+		
+		auto a = representation<long double>(-16382,0x0000000000000000).value();
+		auto b = representation<long double>(-16382,0x0000000000000001).value();
+		print("\na=", a);
+		print("b=", b);
+		print("error=", std::abs(b - a));
+		print("margin=", margin<0>(std::max(a, b)));
+		print("ulp=", ulp(std::max(a, b)));
+		bool c = close_enough(a, b);
+		CHECK(c);
+	}
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 

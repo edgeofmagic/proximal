@@ -7,6 +7,6 @@
 *.DS_Store
 *.lock
 
-nbproject/private/
+nbproject/
 build/
 .dep.inc

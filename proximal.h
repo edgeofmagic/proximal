@@ -804,3 +804,4 @@ namespace utils
 }
 
 #endif /* guard_utils_proximal_h */
+
